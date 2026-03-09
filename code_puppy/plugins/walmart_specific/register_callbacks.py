@@ -189,7 +189,8 @@ async def auth_flow() -> None:
     await authenticate_puppy(available_port)
 
     token = get_puppy_token()
-    os.environ["puppy_token"] = token
+    if token:
+        os.environ["puppy_token"] = token
 
 
 register_callback("startup", ensure_safe_windows_workspace)
