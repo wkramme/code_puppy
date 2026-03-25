@@ -241,7 +241,7 @@ def ensure_config_exists():
     exists = os.path.isfile(CONFIG_FILE)
     config = configparser.ConfigParser()
     if exists:
-        config.read(CONFIG_FILE)
+        config.read(CONFIG_FILE, encoding='utf-8')
     missing = []
     if DEFAULT_SECTION not in config:
         config[DEFAULT_SECTION] = {}
@@ -278,7 +278,7 @@ def ensure_config_exists():
 
 def get_value(key: str):
     config = configparser.ConfigParser()
-    config.read(CONFIG_FILE)
+    config.read(CONFIG_FILE, encoding='utf-8')
     val = config.get(DEFAULT_SECTION, key, fallback=None)
     return val
 
@@ -388,7 +388,7 @@ def get_config_keys():
     default_keys.append("enable_git_auto_commit_prompt")
 
     config = configparser.ConfigParser()
-    config.read(CONFIG_FILE)
+    config.read(CONFIG_FILE, encoding='utf-8')
     keys = set(config[DEFAULT_SECTION].keys()) if DEFAULT_SECTION in config else set()
     keys.update(default_keys)
     return sorted(keys)
@@ -399,7 +399,7 @@ def set_config_value(key: str, value: str):
     Sets a config value in the persistent config file.
     """
     config = configparser.ConfigParser()
-    config.read(CONFIG_FILE)
+    config.read(CONFIG_FILE, encoding='utf-8')
     if DEFAULT_SECTION not in config:
         config[DEFAULT_SECTION] = {}
     config[DEFAULT_SECTION][key] = value
@@ -416,7 +416,7 @@ def set_value(key: str, value: str) -> None:
 def reset_value(key: str) -> None:
     """Remove a key from the config file, resetting it to default."""
     config = configparser.ConfigParser()
-    config.read(CONFIG_FILE)
+    config.read(CONFIG_FILE, encoding='utf-8')
     if DEFAULT_SECTION in config and key in config[DEFAULT_SECTION]:
         del config[DEFAULT_SECTION][key]
         with open(CONFIG_FILE, "w", encoding="utf-8") as f:
@@ -712,7 +712,7 @@ def set_model_name(model: str):
 
     # Also persist to file for new terminal sessions
     config = configparser.ConfigParser()
-    config.read(CONFIG_FILE)
+    config.read(CONFIG_FILE, encoding='utf-8')
     if DEFAULT_SECTION not in config:
         config[DEFAULT_SECTION] = {}
     config[DEFAULT_SECTION]["model"] = model or ""
@@ -889,7 +889,7 @@ def get_all_model_settings(model_name: str) -> dict:
     prefix = f"model_settings_{sanitized_name}_"
 
     config = configparser.ConfigParser()
-    config.read(CONFIG_FILE)
+    config.read(CONFIG_FILE, encoding='utf-8')
 
     settings = {}
     if DEFAULT_SECTION in config:
@@ -928,7 +928,7 @@ def clear_model_settings(model_name: str) -> None:
     prefix = f"model_settings_{sanitized_name}_"
 
     config = configparser.ConfigParser()
-    config.read(CONFIG_FILE)
+    config.read(CONFIG_FILE, encoding='utf-8')
 
     if DEFAULT_SECTION in config:
         keys_to_remove = [
@@ -1450,7 +1450,7 @@ def get_all_agent_pinned_models() -> dict:
         Only includes agents that have a pinned model (non-empty value).
     """
     config = configparser.ConfigParser()
-    config.read(CONFIG_FILE)
+    config.read(CONFIG_FILE, encoding='utf-8')
 
     pinnings = {}
     if DEFAULT_SECTION in config:
